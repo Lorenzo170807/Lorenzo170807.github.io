@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo sobre Pokémon</title>
+    <style>
+        :root {
+            --dark-bg: #121212;
+            --dark-primary: #1e1e1e;
+            --dark-secondary: #2d2d2d;
+            --dark-accent: #4a8fe7;
+            --dark-text: #e0e0e0;
+            --dark-highlight: #3a3a3a;
+            --dark-border: #333333;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-text);
+        }
+        
+        /* Enhanced Dark Title */
+        .titulo {
+            display: flex;
+            background: linear-gradient(145deg, var(--dark-primary), var(--dark-secondary));
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--dark-border);
+            border-radius: 30px;
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+            font-weight: 700;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 40;
+            width: 80%;
+            padding: 25px;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark-accent);
+            margin-top: 20px;
+            text-shadow: 0 0 10px rgba(74, 143, 231, 0.3);
+            font-family: 'Arial Black', sans-serif;
+            text-transform: uppercase;
+            overflow: hidden;
+        }
+        
+        .titulo:hover {
+            transform: translateX(-50%) scale(0.95);
+            box-shadow: 0 15px 35px rgba(74, 143, 231, 0.2);
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(74, 143, 231, 0.5);
+        }
+        
+        /* Enhanced Dark Navigation Bar */
+        .sub {
+            background-color: var(--dark-primary);
+            cursor: pointer;
+            border: none;
+            padding: 18px 36px;
+            color: var(--dark-text);
+            font-size: 1.5rem;
+            font-weight: 600;
+            position: relative;
+            border-radius: 15px;
+            margin-top: 120px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            overflow: hidden;
+            border: 1px solid var(--dark-border);
+        }
+        
+        .sub:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(74, 143, 231, 0.3);
+        }
+        
+        .sub ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            gap: 25px;
+        }
+        
+        .sub ul li {
+            margin: 0;
+            position: relative;
+        }
+        
+        .sub a {
+            text-decoration: none;
+            color: var(--dark-text);
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .sub a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--dark-accent);
+            transition: width 0.3s ease;
+        }
+        
+        .sub ul:hover a {
+            color: #ffffff;
+        }
+        
+        .sub ul a:hover {
+            color: var(--dark-accent);
+        }
+        
+        .sub ul a:hover::after {
+            width: 100%;
+        }
+        
+        .sub::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                var(--dark-secondary),
+                var(--dark-primary),
+                var(--dark-secondary),
+                var(--dark-primary)
+            );
+            background-size: 400% 400%;
+            border-radius: 15px;
+            filter: blur(4px);
+            animation: gradientFlow 12s ease infinite;
+        }
+        
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Content Columns */
+        .contenedor-columna {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            padding: 20px;
+            width: 45%;
+            margin-top: 200px;
+            margin-left: 45%;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        .columna {
+            padding: 25px;
+            background-color: var(--dark-primary);
+            border-radius: 20px;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            color: var(--dark-text);
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+            border: 1px solid var(--dark-border);
+        }
+        
+        .columna:hover {
+            background-color: var(--dark-highlight);
+            box-shadow: 0 15px 30px rgba(74, 143, 231, 0.2);
+            transform: translateY(-10px);
+            border-color: var(--dark-accent);
+        }
+        
+        .columna h3 {
+            text-align: center;
+            margin-top: 0;
+            color: var(--dark-accent);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .menu-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        /* Image Containers (keeping your original images) */
+        .contenedor-imagen {
+            position: absolute;
+            left: -45%;
+            width: 40%;
+            height: auto;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 1s ease-out, opacity 1s ease;
+            transform: translateX(-100px);
+            opacity: 0;
+            z-index: 1;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--dark-border);
+        }
+        
+        .imagen-estatica, .imagen-gif {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            transition: opacity 0.5s ease;
+        }
+        
+        .imagen-gif {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+        
+        .contenedor-imagen.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .contenedor-imagen:hover {
+            border-color: var(--dark-accent);
+        }
+        
+        .contenedor-imagen:hover .imagen-estatica {
+            opacity: 0;
+        }
+        
+        .contenedor-imagen:hover .imagen-gif {
+            opacity: 1;
+        }
+        
+        .contenedor-combinado {
+            position: relative;
+            min-height: 300px;
+            margin-bottom: 30px;
+        }
+        
+        /* New Creator Section */
+        .creator-section {
+            background-color: var(--dark-primary);
+            padding: 40px;
+            margin: 50px auto;
+            max-width: 800px;
+            border-radius: 20px;
+            border: 1px solid var(--dark-accent);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .creator-title {
+            color: var(--dark-accent);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .creator-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .creator-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 3px solid var(--dark-accent);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .creator-info {
+            flex: 1;
+            min-width: 300px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        /* New Games Section */
+        .games-section {
+            background-color: var(--dark-primary);
+            padding: 40px;
+            margin: 50px auto;
+            max-width: 1000px;
+            border-radius: 20px;
+            border: 1px solid var(--dark-accent);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .games-title {
+            color: var(--dark-accent);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .game-types {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+        }
+        
+        .game-card {
+            background-color: var(--dark-secondary);
+            border-radius: 15px;
+            padding: 20px;
+            width: 280px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--dark-border);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(74, 143, 231, 0.3);
+            border-color: var(--dark-accent);
+        }
+        
+        .game-card h4 {
+            color: var(--dark-accent);
+            margin-top: 0;
+            border-bottom: 1px solid var(--dark-accent);
+            padding-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .game-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--dark-border);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .contenedor-columna {
+                width: 90%;
+                margin-left: 5%;
+                margin-top: 250px;
+            }
+            
+            .titulo {
+                font-size: 1.8rem;
+                padding: 15px;
+                width: 90%;
+            }
+            
+            .sub ul {
+                gap: 15px;
+            }
+            
+            .sub a {
+                font-size: 1.2rem;
+            }
+            
+            .creator-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Audio System -->
+<audio id="pokemonAudio" loop style="display: none;">
+    <source src="littleroot.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+</audio>
+  
+<script>
+    const audio = document.getElementById('pokemonAudio');
+    audio.volume = 0.5;
+    
+    function iniciarAudio() {
+      const promise = audio.play();
+      
+      if (promise !== undefined) {
+        promise.catch(error => {
+          mostrarBotonPlay();
+        });
+      }
+    }
+    
+    function mostrarBotonPlay() {
+      const botonPlay = document.createElement('button');
+      botonPlay.innerHTML = '▶ Reproducir música Pokémon';
+      botonPlay.style.position = 'fixed';
+      botonPlay.style.bottom = '20px';
+      botonPlay.style.left = '20px';
+      botonPlay.style.zIndex = '1000';
+      botonPlay.style.padding = '10px 15px';
+      botonPlay.style.borderRadius = '20px';
+      botonPlay.style.backgroundColor = 'var(--dark-accent)';
+      botonPlay.style.color = 'var(--dark-text)';
+      botonPlay.style.border = 'none';
+      botonPlay.style.cursor = 'pointer';
+      botonPlay.style.boxShadow = '0 4px 15px rgba(74, 143, 231, 0.4)';
+      botonPlay.onclick = function() {
+        audio.play();
+        botonPlay.remove();
+      };
+      
+      document.body.appendChild(botonPlay);
+    }
+    
+    window.addEventListener('load', iniciarAudio);
+    document.addEventListener('click', function() {
+      iniciarAudio();
+    }, { once: true });
+</script>
+
+    <h1 class="titulo">Todo sobre Pokémon</h1>
+    
+    <div class="menu-container">
+        <div class="sub">
+            <ul>
+                <li><a href="prueba 2.html">Inicio</a></li>
+                <li><a href="paginas secundarias/tipos de pokemon.html">Tipos</a></li>
+                <li><a href="paginas secundarias/pagina de prueba.html">Tops</a></li>
+                <li><a href="paginas secundarias/consolas.html">Descargas</a></li>
+                <li><a href="#origen">Origen</a></li>
+                <li><a href="#juegos">Juegos</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="contenedor-columna">
+        <!-- Pikachu -->
+        <div class="contenedor-combinado">
+            <div class="contenedor-imagen" id="contenedor1">
+                <img src="pika" 
+                     class="imagen-estatica" 
+                     alt="Pikachu">
+                <img src="https://i.pinimg.com/originals/e9/38/d1/e938d18fc07a3ffd16b4864ef2f1308f.gif" 
+                     class="imagen-gif" 
+                     alt="Pikachu GIF">
+            </div>
+            <div class="columna">
+                <h3>1. ¿Qué es Pokémon?</h3>
+                <p>Pokémon (abreviatura de "Pocket Monsters") es una franquicia creada por Satoshi Tajiri en 1996, desarrollada por Game Freak y publicada por Nintendo. Incluye videojuegos, series animadas, películas, juegos de cartas y más.</p>
+                <p>La franquicia ha generado más de $100 billones de dólares, convirtiéndola en la franquicia de medios más exitosa de la historia.</p>
+            </div>
+        </div>
+        
+        <!-- Bulbasaur -->
+        <div class="contenedor-combinado">
+            <div class="contenedor-imagen" id="contenedor2">
+                <img src="bulbar.png" 
+                     class="imagen-estatica" 
+                     alt="Bulbasaur">
+                <img src="b-unscreen.gif" 
+                     class="imagen-gif" 
+                     alt="Bulbasaur GIF">
+            </div>
+            <div class="columna">
+                <h3>2. Concepto Principal</h3>
+                <p>Los Pokémon son criaturas con habilidades especiales que los entrenadores capturan, entrenan y usan para combatir. El objetivo principal en los juegos es:</p>
+                <ul>
+                    <li>Capturar Pokémon (con Pokéballs)</li>
+                    <li>Entrenarlos para subir de nivel</li>
+                    <li>Completar la Pokédex (enciclopedia de todas las especies)</li>
+                    <li>Derrotar a los Líderes de Gimnasio y a la Liga Pokémon</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="contenedor-combinado">
+            <div class="contenedor-imagen" id="contenedor3">
+                <img src="red.png" 
+                     class="imagen-estatica" 
+                     alt="Red">
+                <img src="r.gif" 
+                     class="imagen-gif" 
+                     alt="Red GIF">
+            </div>
+            <div class="columna">
+                <h3>3. Datos Curiosos</h3>
+                <ul>
+                    <li>Pikachu es la mascota oficial</li>
+                    <li>El primer Pokémon creado fue Rhydon (aunque Bulbasaur es el #001 en la Pokédex)</li>
+                    <li>Ash Ketchum (Satoshi en Japón) es el protagonista del anime</li>
+                    <li>El juego más vendido es Pokémon Rojo/Azul/Verde con más de 31 millones de copias</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Creator Section -->
+    <section id="origen" class="creator-section">
+        <h2 class="creator-title">El Origen de Pokémon</h2>
+        <div class="creator-content">
+            <img src="https://images.wikidexcdn.net/mwuploads/wikidex/0/03/latest/20230307171117/Satoshi_Tajiri_2018.jpg" 
+                 alt="Satoshi Tajiri" 
+                 class="creator-image">
+            <div class="creator-info">
+                <h3>Satoshi Tajiri - El Padre de Pokémon</h3>
+                <p>Satoshi Tajiri (nacido el 28 de agosto de 1965) es el creador de Pokémon y fundador de Game Freak. Su pasión por coleccionar insectos en su juventud inspiró el concepto de "atrapar criaturas".</p>
+                <p>En 1989 fundó Game Freak, que inicialmente era una revista sobre juegos. La idea de Pokémon surgió cuando vio el potencial del cable link de Game Boy para conectar dispositivos, imaginando insectos moviéndose entre consolas.</p>
+                <p>El desarrollo de los primeros juegos (Pokémon Rojo y Verde) tomó 6 años, casi llevando a Game Freak a la bancarrota. Nintendo apoyó el proyecto, que finalmente se lanzó en 1996 convirtiéndose en un éxito mundial.</p>
+                <p>Tajiri tiene síndrome de Asperger, y su enfoque único y atención al detalle fueron cruciales para el éxito de Pokémon. Aunque ya no dirige el desarrollo, sigue siendo una figura importante en la franquicia.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Games Section -->
+    <section id="juegos" class="games-section">
+        <h2 class="games-title">Tipos de Juegos Pokémon</h2>
+        <div class="game-types">
+            <!-- Main Series -->
+            <div class="game-card">
+                <img src="https://preview.redd.it/br00yrf2uawd1.png?auto=webp&s=dd9433a6385d85f981cdce31e835019f0b08f76c" alt="Main Series">
+                <h4>Serie Principal RPG</h4>
+                <p>Los juegos principales de rol donde capturas, entrenas y luchas con Pokémon. Cada generación introduce una nueva región:</p>
+                <ul>
+                    <li>Generación 1: Rojo/Azul/Amarillo</li>
+                    <li>Generación 9: Escarlata/Violeta</li>
+                    <li>Remakes: FuegoRojo/VerdeHoja, DiamanteBrillante/PerlaReluciente</li>
+                </ul>
+            </div>
+            
+            <!-- Spin-offs -->
+            <div class="game-card">
+                <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2021/08/Pokemon-Spin-Off-Tiers.jpg" alt="Spin-offs">
+                <h4>Juegos Spin-off</h4>
+                <p>Diferentes géneros que expanden el universo Pokémon:</p>
+                <ul>
+                    <li>Pokémon GO (realidad aumentada)</li>
+                    <li>Pokkén Tournament (lucha)</li>
+                    <li>Pokémon Mystery Dungeon (roguelike)</li>
+                    <li>Pokémon Unite (MOBA)</li>
+                </ul>
+            </div>
+            
+            <!-- TCG -->
+            <div class="game-card">
+                <img src="https://m.media-amazon.com/images/I/81HhQhMMNmL.jpg" alt="TCG">
+                <h4>Juego de Cartas</h4>
+                <p>El Pokémon Trading Card Game (TCG) tiene su propia versión digital:</p>
+                <ul>
+                    <li>Juego de estrategia por turnos</li>
+                    <li>Más de 70 expansiones</li>
+                    <li>Competiciones oficiales</li>
+                    <li>Versión física y digital (TCG Live)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function animarImagenes() {
+            const contenedores = document.querySelectorAll('.contenedor-imagen');
+            
+            contenedores.forEach(contenedor => {
+                const contenedorPosicion = contenedor.getBoundingClientRect().top;
+                const alturaPantalla = window.innerHeight / 1.3;
+                
+                if(contenedorPosicion < alturaPantalla) {
+                    contenedor.classList.add('visible');
+                }
+            });
+        }
+        
+        window.addEventListener('load', animarImagenes);
+        window.addEventListener('scroll', animarImagenes);
+    </script>
+</body>
+</html>
